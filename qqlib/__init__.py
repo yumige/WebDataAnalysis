@@ -5,7 +5,7 @@ QQ Login module
 Maintainer: Gerald <gera2ld@163.com>
 Last change: 2015 Apr 20
 '''
-import os, hashlib, re, tempfile, binascii, base64
+import os, hashlib, re, tempfile, binascii, base64, subprocess, sys
 import rsa, requests
 from . import tea
 __all__ = ['QQ', 'LogInError']
@@ -128,7 +128,12 @@ class QQ:
 		tmp = tempfile.mkstemp(suffix = '.jpg')
 		os.write(tmp[0], r.content)
 		os.close(tmp[0])
-		os.startfile(tmp[1])
+		if sys.platform == 'windows':
+			os.startfile(tmp[1])
+		elif sys.platform == 'linux':
+			subprocess.call(['xdg-open', tmp[1]])
+		else:
+			subprocess.call(['open', tmp[1]])
 		vcode = input('Verify code: ')
 		os.remove(tmp[1])
 		return vcode
