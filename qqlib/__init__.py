@@ -128,7 +128,7 @@ class QQ:
 		tmp = tempfile.mkstemp(suffix = '.jpg')
 		os.write(tmp[0], r.content)
 		os.close(tmp[0])
-		if sys.platform == 'windows':
+		if sys.platform == 'win32':
 			os.startfile(tmp[1])
 		elif sys.platform == 'linux':
 			subprocess.call(['xdg-open', tmp[1]])
