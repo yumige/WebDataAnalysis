@@ -5,6 +5,25 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.alert import Alert
 import time
 
+def getPersonalInfo(browser):
+	browser.get('http://user.qzone.qq.com/2468718769/1')
+	time.sleep(2)
+	browser.switch_to_frame(0)
+	time.sleep(2)
+	info_link = browser.find_element_by_id('info_link')
+	info_link.click()
+	personal_info = browser.find_element_by_class_name('preview_list')
+	print (personal_info.text)
+
+def getVisitorLinks(browser):
+	browser.get('http://user.qzone.qq.com/1565223319')
+	time.sleep(2)
+	browser.switch_to_frame('QM_Feeds_Iframe')
+	time.sleep(2)
+	visitors = browser.find_elements_by_class_name('q_namecard')
+	link_set = set([ x.get_attribute('href') for x in visitors if x.get_attribute('href') ])
+	print (link_set)
+
 profileUrl = 'http://ic2.qzone.qq.com/cgi-bin/feeds/feeds_html_module?i_uin=\
 2468718769&i_login_uin=1360509576&style=35&version=8&needDelOpr=true&hideExtend=false\
 &showcount=10&MORE_FEEDS_CGI=http%3A%2F%2Fic2.qzone.qq.com%2Fcgi-bin%2Ffeeds%2Ffeeds_html_act_all&refer=5'
@@ -52,6 +71,13 @@ try:
 	# profileBtn = browser.find_elements_by_class_name('app-name')[8]
 	# print profileBtn
 	# profileBtn.click()
+
+	# try getting personal info
+	getPersonalInfo(browser)
+
+	# try getting visitor links
+	getVisitorLinks(browser)
+
 except NoSuchElementException as e:
 	print(e)
 browser.close()
